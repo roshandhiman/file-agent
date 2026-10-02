@@ -17,7 +17,7 @@ def save_file(filename:str,content:str) ->str:
     path=os.path.join(SAVE_FOLDER,filename)
     with open(path,"w",encoding="utf-8") as file:
         file.write(content)
-    return f"File '{filename}' saved successfully."
+    return f"File '{filename}' saved successfully.\n AT path '{path}"
 def read_notes()->str:
     if not os.path.exists(NOTES_FILE):
         return "No Notes"
@@ -37,11 +37,11 @@ agent=ag(
         "you can create multiple files when requested. "),
     )
 def main():
-    print("I am ready SIR !!!!!!! TYPE quit or exit for tata byebye \n")
+    print("I am ready SIR !!!!!!! TYPE quit or exit or bye for tata byebye \n")
     hist=[]
     while True:
         usrinp=input("YOU -> ")
-        if usrinp.strip().lower() in ("quit","exit"):
+        if usrinp.strip().lower() in ("quit","exit","bye"):
             break
         result=agent.run_sync(usrinp,message_history=hist)
         hist=result.all_messages()
