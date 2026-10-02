@@ -8,24 +8,33 @@ model=OllamaModel("qwen2.5:1.5b",
 def get_curr_time():
     return dt.now().strftime("%A,%B %d,%Y at %I:%M %p")
 NOTES_FILE="notes.txt"
-# def save_note(note:str) ->str:
-#     with open(NOTES_FILE,"a",encoding="utf-8") as file:
-#         file.write(f"-{note}\n")
-#     return "Note Saved."    
-
+def save_note(note:str) ->str:
+    with open(NOTES_FILE,"a",encoding="utf-8") as file:
+        file.write(f"-{note}\n")
+    return "Note Saved."    
+SAVE_FOLDER="files"
+def save_file(filename:str,content:str) ->str:
+    path=os.path.join(SAVE_FOLDER,filename)
+    with open(path,"w",encoding="utf-8") as file:
+        file.write(content)
+    return f"File '{filename}' saved successfully."
 def read_notes()->str:
     if not os.path.exists(NOTES_FILE):
         return "No Notes"
     with open(NOTES_FILE,encoding="utf-8") as file:
         return file.read()
 agent=ag(
-    model,tools=[get_curr_time,save_note,read_notes],
+    model,tools=[save_file,get_curr_time,save_note,read_notes],
     instructions=(
         "you are a helful persoanl assistant running locally."
         "use your tools whenever they can help the question."
         "keep your answers short and friendly"
         "when the user asks you to save a note, you MUST call the save_note tool."
-        "do not write tool calls as text or JSON."),
+        "do not write tool calls as text or JSON."
+        "automatically choose a suitable filename and extension based on the requested content. "
+        "if the user does not provide a filename, create a sensible filename yourself. "
+        "support any file extension such as txt, py, java, c, cpp, js, html, css, json, etc. "
+        "you can create multiple files when requested. "),
     )
 def main():
     print("I am ready SIR !!!!!!! TYPE quit or exit for tata byebye \n")
