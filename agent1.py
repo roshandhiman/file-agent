@@ -12,7 +12,10 @@ def save_note(note:str) ->str:
     with open(NOTES_FILE,"a",encoding="utf-8") as file:
         file.write(f"-{note}\n")
     return "Note Saved."    
-SAVE_FOLDER="files"
+# SAVE_FOLDER="files"
+base_dir=os.path.dirname(os.path.abspath(__file__))
+SAVE_FOLDER=os.path.join(base_dir,"files")
+os.makedirs(SAVE_FOLDER,exist_ok=True)
 def list_files() -> str:
     if not os.path.exists(SAVE_FOLDER):
         return "Folder does not exist."
