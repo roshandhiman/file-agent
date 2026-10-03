@@ -44,11 +44,12 @@ def del_file(filename:str)->str:
         return f"File {filename} does not existsssssssssss"
     os.remove(path)
     return f"File {filename} deleted successfullyyyy"
-def save_file(filename:str,content:str) ->str:
+def save_file(filename:str,content:str=" ") ->str:
+    """Create and save actual real file in files folder must be used whever the user ask to create or stor a file"""
     path=os.path.join(SAVE_FOLDER,filename)
     with open(path,"w",encoding="utf-8") as file:
         file.write(content)
-    return f"File '{filename}' saved successfully.\n AT path '{path}"
+    return f"File '{filename}' saved successfully.\n AT path '{os.path.abspath(path)}"
 def read_notes()->str:
     if not os.path.exists(NOTES_FILE):
         return "No Notes"
@@ -65,7 +66,10 @@ agent=ag(
         "automatically choose a suitable filename and extension based on the requested content. "
         "if the user does not provide a filename, create a sensible filename yourself. "
         "support any file extension such as txt, py, java, c, cpp, js, html, css, json, etc. "
-        "you can create multiple files when requested. "),
+        "you can create multiple files when requested. "
+        "when use ask to create or save file save it automatically in the roooooooot directory"
+        "call the save_file function to save the fileeeeeee"
+        "dont ask use to manuly copy and paste its your duty ro save the file automaticallyyy"),
     )
 def main():
     print("I am ready SIR !!!!!!! TYPE quit or exit or bye for tata byebye \n")
