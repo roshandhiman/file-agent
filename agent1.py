@@ -13,6 +13,34 @@ def save_note(note:str) ->str:
         file.write(f"-{note}\n")
     return "Note Saved."    
 SAVE_FOLDER="files"
+def list_files() -> str:
+    if not os.path.exists(SAVE_FOLDER):
+        return "Folder does not exist."
+    files=os.listdir(SAVE_FOLDER)
+    if not files:
+        return "The folder is emplty"
+    result="Files in folder:\n"
+    for filename in files:
+        path=os.path.join(SAVE_FOLDER,filename)
+        if os.path.isfile(path):
+            size=os.path.getsize(path)
+            result+=f"-{filename} ({size} bytes)\n"
+    return result
+def read_file(filename:str)->str:
+    path=os.path.join(SAVE_FOLDER,filename)
+    if not os.path.exists(path):
+        return f"File {filename} does not existssss"
+    with open(path,"r",encoding ="utf-8") as file:
+        contents=file.read()
+    return (f"File : {filename}\n" f"Path: {os.path.abspath(path)}\n"
+            f"Size: {os.path.getsize(path)} bytes\n\n"
+            f"Content:\n{contents}")
+def del_file(filename:str)->str:
+    path=os.path.join(SAVE_FOLDER,filename)
+    if not os.path.exists(path):
+        return f"File {filename} does not existsssssssssss"
+    os.remove(path)
+    return f"File {filename} deleted successfullyyyy"
 def save_file(filename:str,content:str) ->str:
     path=os.path.join(SAVE_FOLDER,filename)
     with open(path,"w",encoding="utf-8") as file:
@@ -24,7 +52,7 @@ def read_notes()->str:
     with open(NOTES_FILE,encoding="utf-8") as file:
         return file.read()
 agent=ag(
-    model,tools=[save_file,get_curr_time,save_note,read_notes],
+    model,tools=[save_file,get_curr_time,save_note,read_notes,del_file,read_file,list_files],
     instructions=(
         "you are a helful persoanl assistant running locally."
         "use your tools whenever they can help the question."
